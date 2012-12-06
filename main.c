@@ -7,7 +7,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
+//#include <conio.h>
 #include <./funcs.h>
 #include <./funcs.c>
 #define pf(x) {printf(x);}
@@ -50,7 +52,7 @@ int play_game();
 Piece make_piece(char *color,int p, char *output);
 int one_move(Board  *board,int sx,int sy,int dx,int dy);
 int parse_string_move(char c);
-//int play_king(Board  *board,int sx,int sy,int dx,int dy);
+int play_king(Board  *board,int sx,int sy,int dx,int dy);
 int play_pawn(Board  *board,int sx,int sy,int dx,int dy);
 int play_queen(Board  *board,int sx,int sy,int dx,int dy);
 int play_rook(Board  *board,int sx,int sy,int dx,int dy);
@@ -154,6 +156,15 @@ void draw_board (Board  *board)
 		for (x = 0 ;x<8;x++)
 		{
 			if(board->board[x][y].status == 1){
+				if (board->board[x][y].color == 'w'){
+					//textcolor(GREEN);
+				}
+				else if (board->board[x][y].color == 'b'){
+					//textcolor(BLUE);
+				}
+				else{
+					//textcolor(BLACK);
+				}
 				printf("%s",board->board[x][y].output);
 			}
 
@@ -161,6 +172,7 @@ void draw_board (Board  *board)
 		}
 		printf("%d",y);
 		printf("\n");
+
 	}
 	pf(" ");
 	for (x = 0 ;x<8;x++)
@@ -226,7 +238,7 @@ int play_bishop(Board *board,int sx,int sy,int dx,int dy)
 		}
 		//board->board[dx][dy] = board->board[sx][sy];
 		//board->board[sx][sy] = (Piece){"empty",EMPTY,"_",1};
-		switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
+		//switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
 		return 1;
 	}
 	return 0;
@@ -245,7 +257,7 @@ int play_knight(Board *board,int sx,int sy,int dx,int dy)
 		//board->board[dx][dy] = board->board[sx][sy];
 		//board->board[sx][sy] = (Piece){"empty",EMPTY,"_",1};
 		//pf("\n");
-		switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
+		//switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
 		return 1;
 	}
 	return 0;
@@ -290,8 +302,6 @@ int play_pawn(Board  *board,int sx,int sy,int dx,int dy)
 		//@todo write function to move player get two pointers and switch;
 		//board->board[dx][dy] = board->board[sx][sy];
 		//board->board[sx][sy] = (Piece){"empty",EMPTY,"_",1};
-		switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
-		pf("\n");
 		return 1;
 	}
 
@@ -333,15 +343,57 @@ int play_rook (Board  *board,int sx,int sy,int dx,int dy)
 		}
 		//board->board[dx][dy] = board->board[sx][sy];
 		//board->board[sx][sy] = (Piece){"empty",EMPTY,"_",1};
-		switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
+		//switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
 		return 1;
 	}
 	return 0;
 
 
 }
+int play_king(Board  *board,int sx,int sy,int dx,int dy)
+{
+	if (sx == dx){
+		if(abs(sy -dy) != 1){
+			pf("358");
+			return 0;
+		}
+	}
+	else if(sy == dy){
+		if(abs(sx-dx) != 1){
+			pf("364");
+			return 0;
+		}
+	}
+	else if	(abs(sx-dx) != 1 || abs(dy-sy) != 1){
+		printf("%d != 1 || %d != 1,== %d;",abs(sx-dx),abs(dy-sy),(abs(sx-dx) != 1 || abs(dy-sy) != 1));
+		pf(",368");
+		return 0;
+	}
+	/*if(is_thret(board,dx,dy) ){
+
+	}*/
+	//switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
+	return 1;
+
+}
+int is_threat (Board *board,int dx,int dy,char *color)
+{
+	int i ,j,result ;
+	for (i =0;i<8;i++){
+		for(j=0;j<8;j++){
+			if(board->board[i][j].color != color && board->board[i][j].color != "empty"){
+				result = one_move(board,i,j,dx,dy);
+				if (result == 1){
+					return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
 int one_move(Board  *board,int sx,int sy,int dx,int dy)
 {
+	int result;
 	if(!not_empty(board->board[sx][sy])){
 		return 0;
 	}
@@ -353,31 +405,37 @@ int one_move(Board  *board,int sx,int sy,int dx,int dy)
 	}
 	printf("\n[%d,%d],[%d,%d] - ",sx,sy,dx,dy);
 	printf("pawn type:%s;pawn color:%s\n",board->board[sx][sy].output,board->board[sx][sy].color);
+
 	switch(board->board[sx][sy].t)
 	{
 		//ROOK,KNIGHT,BISHOP,QUEEN,KING,PAWN
 		case PAWN:
-			return play_pawn(board,sx,sy,dx,dy);
-
+			result = play_pawn(board,sx,sy,dx,dy);
+			break;
 		case ROOK:
-			return play_rook(board,sx,sy,dx,dy);
-
+			result = play_rook(board,sx,sy,dx,dy);
+			break;
 		case KNIGHT:
-			return play_knight(board,sx,sy,dx,dy);
-
+			result = play_knight(board,sx,sy,dx,dy);
+			break;
 		case BISHOP:
-			return play_bishop(board,sx,sy,dx,dy);
-
+			result =  play_bishop(board,sx,sy,dx,dy);
+			break;
 		case QUEEN:
-			return	play_queen(board,sx,sy,dx,dy);
+			result = 	play_queen(board,sx,sy,dx,dy);
+			break;
 		case KING:
-		//	play_king(Board  *board,int sx,int sy,int dx,int dy);
+			result =  play_king(board,sx,sy,dx,dy);
 			break;
 		default:
 			break;
-
 	}
-	return 1;
+	if(result == 1){
+		switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
+		return 1;
+	}else{
+		return 0;
+	}
 }
 int not_empty(Piece p)
 {
@@ -612,6 +670,54 @@ void test_queen()
 	assert(test_move(&board,3,3,4,5) == 0);
 	assert(test_move(&board,3,3,7,7) == 0);
 }
+void test_king()
+{
+	Board board;
+	init_board(&board);
+	//draw_board(&board);
+		board.board[3][3] = board.board[4][0];
+		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		draw_board(&board);
+		assert(test_move(&board,3,3,3,2) == 1);
+		init_board(&board);
+		board.board[3][3] = board.board[4][0];
+		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+
+		assert(test_move(&board,3,3,2,3) == 1);
+		init_board(&board);
+		board.board[3][3] = board.board[4][0];
+		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		assert(test_move(&board,3,3,7,5) == 0);
+		assert(test_move(&board,3,3,4,4) == 1);
+		init_board(&board);
+		board.board[3][3] = board.board[4][0];
+		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+
+		assert(test_move(&board,3,3,2,2) == 1);
+		init_board(&board);
+		board.board[3][3] = board.board[4][0];
+		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+
+		assert(test_move(&board,3,3,4,4) == 1);
+		init_board(&board);
+		board.board[3][3] = board.board[4][0];
+		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+
+		assert(test_move(&board,3,3,4,3) == 1);
+		init_board(&board);
+		board.board[3][3] = board.board[4][0];
+		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+
+		assert(test_move(&board,3,3,3,5) == 0);
+		assert(test_move(&board,3,3,2,5) == 0);
+		assert(test_move(&board,3,3,5,2) == 0);
+		assert(test_move(&board,3,3,1,3) == 0);
+		assert(test_move(&board,3,3,5,3) == 0);
+		assert(test_move(&board,3,3,1,1) == 0);
+		assert(test_move(&board,3,3,2,1) == 0);
+
+}
+
 void test_game_start()
 {
 	Board board;
@@ -626,15 +732,25 @@ void test_game_start()
 	assert(one_move(&board,3,7,4,6) ==1);
 	assert(one_move(&board,6,0,7,2) ==1);
 	assert(one_move(&board,6,7,5,5) ==1);
+	assert(one_move(&board,5,5,5,4) ==0);
 	draw_board(&board);
 
+}
+void test_is_threat()
+{
+	Board board;
+	init_board(&board);
+	draw_board(&board);
+	assert(is_threat(&board,3,3,"b") == 0);
+	assert(is_threat(&board,3,3,"w") == 0);
 }
 int main ()
 {
 	pf("start\n");
-	//@todo king move
+	//test_is_threat();
+	//test_game_start();
 	//@todo switch king and rook
-	//@todo add function for threatened place
+	//@todo take the code of the switch and wrap it with a function is_ok
 	//@todo color the soldiers
 	//play_game();
 	//test_pawn();
@@ -642,7 +758,14 @@ int main ()
 	//test_bishop();
 	//test_rook();
 	//test_queen();
-	//test_game_start();
+	test_game_start();
+	//test_king();
+	//char *b = "hello";
+	//int result;
+	//assert(strcmp(b,"hello") == 0);
+	//result = strcmp(b,"bello");
+	//printf("%d,",result);
+	//assert((b == "h") == 1);
 	pf("end game");
 
 }
