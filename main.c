@@ -10,9 +10,13 @@
 #include <string.h>
 #include <assert.h>
 //#include <conio.h>
-#include <src.h>
-//#include <funcs.c>
-#include <tests.h>
+//#include <./src.h>
+//#include "funcs.c"
+
+//
+//#include <tests.c>
+#include "src.h"
+#include "tests.h"
 //#include <tests.c>
 //#include <stdint.h>
 //#include <./definitions.h>
@@ -21,8 +25,9 @@
 
 int main ()
 {
-	pf("start\n");
-	test_is_threat();
+	printf("start\n");
+	//print_int(10,15);
+	//test_is_threat();
 	//test_game_start();
 	//@todo switch king and rook
 	//@todo take the code of the switch and wrap it with a function is_ok
@@ -41,6 +46,6 @@ int main ()
 	//result = strcmp(b,"bello");
 	//printf("%d,",result);
 	//assert((b == "h") == 1);
-	pf("end game");
+	printf("end game");
 
 }

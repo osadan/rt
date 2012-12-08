@@ -4,23 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../main.c \
-../src.c \
-../tests.c 
+../temp/funcs.c 
 
 OBJS += \
-./main.o \
-./src.o \
-./tests.o 
+./temp/funcs.o 
 
 C_DEPS += \
-./main.d \
-./src.d \
-./tests.d 
+./temp/funcs.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-%.o: ../%.c
+temp/%.o: ../temp/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
 	gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
