@@ -194,6 +194,7 @@ int play_bishop(Board *board,int sx,int sy,int dx,int dy)
 	}
 	return 0;
 }
+
 int play_knight(Board *board,int sx,int sy,int dx,int dy)
 {
 	//Piece temp = board->board[sx][sy];
@@ -213,6 +214,7 @@ int play_knight(Board *board,int sx,int sy,int dx,int dy)
 	}
 	return 0;
 }
+
 int play_pawn(Board  *board,int sx,int sy,int dx,int dy)
 {
 	//@todo whan pawn get to the end of the board switch to something
@@ -258,6 +260,7 @@ int play_pawn(Board  *board,int sx,int sy,int dx,int dy)
 
 	return 0;
 }
+
 int play_rook (Board  *board,int sx,int sy,int dx,int dy)
 {
 	int i,max,x,y;
@@ -301,6 +304,7 @@ int play_rook (Board  *board,int sx,int sy,int dx,int dy)
 
 
 }
+
 int play_king(Board  *board,int sx,int sy,int dx,int dy)
 {
 	if (sx == dx){
@@ -320,21 +324,23 @@ int play_king(Board  *board,int sx,int sy,int dx,int dy)
 		pf(",368");
 		return 0;
 	}
-	/*if(is_thret(board,dx,dy) ){
-
-	}*/
+	if(is_thret(board,dx,dy,board.board[sx][sy].color) ){
+		pf("chess\n");
+		return 0;
+	}
 	//switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
 	return 1;
 
 }
+
 int is_threat (Board *board,int dx,int dy,char *color)
 {
 	int i ,j,result ;
 	for (i =0;i<8;i++){
 		for(j=0;j<8;j++){
 			if(board->board[i][j].color != color && board->board[i][j].color != "empty"){
-				printf("%s != %s\n",board->board[i][j].color,color);
-				printf("check piece %s ->%s [%d][%d]\n",board->board[i][j].output,board->board[i][j].color,i,j);
+				//printf("%s != %s\n",board->board[i][j].color,color);
+				//printf("check piece %s ->%s [%d][%d]\n",board->board[i][j].output,board->board[i][j].color,i,j);
 				result = move_inner(board,i,j,dx,dy);
 				if (result == 1){
 					return result;
@@ -344,6 +350,7 @@ int is_threat (Board *board,int dx,int dy,char *color)
 	}
 	return 0;
 }
+
 int move_inner(Board  *board,int sx,int sy,int dx,int dy)
 {
 	if(!not_empty(board->board[sx][sy])){
@@ -376,6 +383,7 @@ int move_inner(Board  *board,int sx,int sy,int dx,int dy)
 			return 0;
 	}
 }
+
 int one_move(Board  *board,int sx,int sy,int dx,int dy)
 {
 	int result;
@@ -387,10 +395,12 @@ int one_move(Board  *board,int sx,int sy,int dx,int dy)
 		return 0;
 	}
 }
+
 int not_empty(Piece p)
 {
 	return p.t != EMPTY;
 }
+
 int parse_string_move(char c)
 {
 	if ( c > 96 && c < 123 ){
@@ -402,6 +412,7 @@ int parse_string_move(char c)
 	return 0;
 
 }
+
 int play_game()
 {
 	Board board ;
