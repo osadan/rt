@@ -201,7 +201,7 @@ void test_king()
 	init_board(&board);
 	//draw_board(&board);
 		board.board[3][3] = board.board[4][0];
-		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		board.board[4][0] = (Piece){"empty",EMPTY,'_',1};
 		draw_board(&board);
 		assert(test_move(&board,3,3,3,2) == 1);
 		init_board(&board);

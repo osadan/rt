@@ -4,6 +4,7 @@
  *  Created on: Dec 7, 2012
  *      Author: ehud
  */
+#include <ctype.h>
 #include "src.h"
 
 
@@ -20,7 +21,7 @@ Board init_game ()
 	return board;
 }
 
-Piece make_piece(char *color,int p , char *output)
+Piece make_piece(char *color,int p , char output)
 {
 	Piece piece ;
 	piece.color = color;
@@ -33,16 +34,16 @@ Piece make_piece(char *color,int p , char *output)
 void init_board (Board *board)
 {
 	int y,x;
-	char *output;
+	char output;
 	for(x=0;x<8;x++)
 		 for(y=1;y<6;y++)
 		 {
 			 if (y == 1){
-					board->board[x][y] = make_piece("w",PAWN,"P");
-					board->board[x][7-y] = make_piece("b",PAWN,"P");
+					board->board[x][y] = make_piece("w",PAWN,(char)'P');
+					board->board[x][7-y] = make_piece("b",PAWN,(char)'P');
 			 }
 			 else{
-				 board->board[x][y] = (Piece){"empty",EMPTY,"_",1};
+				 board->board[x][y] = (Piece){"empty",EMPTY,'_',1};
 			 }
 		 }
 	for (x=0;x<5;x++) //x < 5
@@ -52,33 +53,33 @@ void init_board (Board *board)
 				{
 					case 0:
 						//ROOK
-						output = "R";
+						output = 'R';
 						break;
 					case 1:
 						//KNIGHT
-						output = "H";
+						output = 'H';
 						break;
 					case 2:
 						//BISHOP
-						output = "B";
+						output = 'B';
 						break;
 					case 3:
 						//QUEEN
-						output = "Q";
+						output = 'Q';
 						break;
 					case 4:
 						//KING
-						output = "K";
+						output = 'K';
 					break;
 					default:
 						break;
 				}
-				board->board[x][0] =  make_piece("w",x,output);
-				board->board[x][7] =  make_piece("b",x,output);
+				board->board[x][0] =  make_piece("w",x,(char)output);
+				board->board[x][7] =  make_piece("b",x,(char)output);
 				if (x != KING && x != QUEEN)
 				{
-					board->board[7-x][0] =  make_piece("w",x,output);
-					board->board[7-x][7] =  make_piece("b",x,output);
+					board->board[7-x][0] =  make_piece("w",x,(char)output);
+					board->board[7-x][7] =  make_piece("b",x,(char)output);
 				}
 		}
 
@@ -86,7 +87,7 @@ void init_board (Board *board)
 
 void switch_piece(Piece *piece_src,Piece *piece_dest)
 {
-	Piece temp = (Piece){"empty",EMPTY,"_",1};
+	Piece temp = (Piece){"empty",EMPTY,'_',1};
 	memcpy(piece_dest,piece_src,sizeof(Piece));
 	memcpy(piece_src,&temp,sizeof(Piece));
 
@@ -95,6 +96,7 @@ void switch_piece(Piece *piece_src,Piece *piece_dest)
 void draw_board (Board  *board)
 {
 	int x,y;
+	char output;
 	pf("\n ");
 	for (x = 0 ;x<8;x++)
 	{
@@ -107,16 +109,19 @@ void draw_board (Board  *board)
 		for (x = 0 ;x<8;x++)
 		{
 			if(board->board[x][y].status == 1){
-				if (board->board[x][y].color == 'w'){
-					//textcolor(GREEN);
+				output = board->board[x][y].output;
+				//printf("'%d','%d','%s',\n",x,y,board->board[x][y].color);
+				if (strcmp(board->board[x][y].color, "w") == 0){
+
 				}
-				else if (board->board[x][y].color == 'b'){
-					//textcolor(BLUE);
+				else if (strcmp(board->board[x][y].color, "b") == 0){
+					output = tolower(output);
+				//	printf(",,%c,,",c);
 				}
 				else{
 					//textcolor(BLACK);
 				}
-				printf("%s",board->board[x][y].output);
+				printf("%s",&output);
 			}
 
 
@@ -133,6 +138,7 @@ void draw_board (Board  *board)
 	pf("\n");
 
 }
+
 int play_queen(Board  *board,int sx,int sy,int dx,int dy)
 {
 	int result_rook ,result_bishop;
@@ -198,8 +204,8 @@ int play_bishop(Board *board,int sx,int sy,int dx,int dy)
 int play_knight(Board *board,int sx,int sy,int dx,int dy)
 {
 	//Piece temp = board->board[sx][sy];
-	int result_x,result_y,i;//,flag = 0;
-	int x,y;
+	int result_x,result_y;//,flag = 0;
+	//int x,y,i;
 	result_x = (sx > dx) ? sx - dx : dx -sx;
 	result_y = (sy > dy) ? sy -dy : dy -sy;
 	if ((result_x == 1 && result_y == 2) || (result_x == 2 && result_y == 1)){
@@ -220,34 +226,46 @@ int play_pawn(Board  *board,int sx,int sy,int dx,int dy)
 	//@todo whan pawn get to the end of the board switch to something
 	Piece temp = board->board[sx][sy];
 	int flag = 0;
-	if (temp.color == "w" && sy == 1 && dy == 3 && (sx == dx)){
-		printf("%d",__LINE__);
+	if ((strcmp(temp.color , "w") == 0) && sy == 1 && dy == 3 && (sx == dx)){
+		#ifdef _DEBUG
+			printf("%d",__LINE__);
+		#endif
 		if(not_empty(board->board[dx][2]) || not_empty(board->board[dx][3])){
 			return 0;
 		}
 		flag = 1;
 	}
-	else  if(temp.color == "b" && sy == 6 && dy == 4 && (sx == dx)){
-		printf("%d",__LINE__);
+	else  if((strcmp(temp.color,"b") == 0) && sy == 6 && dy == 4 && (sx == dx)){
+		#ifdef _DEBUG
+			printf("%d",__LINE__);
+		#endif
 		if(not_empty(board->board[dx][5]) || not_empty(board->board[dx][4])){
 			return 0;
 		}
 		flag = 1;
 	}
-	else if (temp.color == "w" && sx == dx && ( dy - sy  == 1) ){
-		printf("%d",__LINE__);
+	else if ((strcmp(temp.color,"w") == 0) && sx == dx && ( dy - sy  == 1) ){
+		#ifdef _DEBUG
+			printf("%d",__LINE__);
+		#endif
 		flag = 1 ;
 	}
-	else if (temp.color == "b" && sx == dx && (sy - dy == 1)){
-		printf("%d",__LINE__);
+	else if ((strcmp(temp.color , "b") == 0) && sx == dx && (sy - dy == 1)){
+		#ifdef _DEBUG
+			printf("%d",__LINE__);
+		#endif
 		flag = 1;
 	}
-	else if (temp.color == "w" && (dx == sx +1 || dx == sx -1) && (dy - sy == 1) && not_empty(board->board[dx][dy])){
-		printf("%d",__LINE__);
+	else if ((strcmp(temp.color , "w") == 0) && (dx == sx +1 || dx == sx -1) && (dy - sy == 1) && not_empty(board->board[dx][dy])){
+		#ifdef _DEBUG
+			printf("%d",__LINE__);
+		#endif
 		flag = 1;
 	}
-	else if (temp.color == "b" && (dx == sx +1 || dx == sx -1) && (sy - dy == 1) && not_empty(board->board[dx][dy])){
-		printf("%d",__LINE__);
+	else if ((strcmp(temp.color , "b") == 0) && (dx == sx +1 || dx == sx -1) && (sy - dy == 1) && not_empty(board->board[dx][dy])){
+		#ifdef _DEBUG
+			printf("%d",__LINE__);
+		#endif
 		flag = 1;
 	}
 
@@ -324,7 +342,7 @@ int play_king(Board  *board,int sx,int sy,int dx,int dy)
 		pf(",368");
 		return 0;
 	}
-	if(is_thret(board,dx,dy,board.board[sx][sy].color) ){
+	if(is_threat(board,dx,dy,board->board[sx][sy].color) ){
 		pf("chess\n");
 		return 0;
 	}
@@ -338,7 +356,7 @@ int is_threat (Board *board,int dx,int dy,char *color)
 	int i ,j,result ;
 	for (i =0;i<8;i++){
 		for(j=0;j<8;j++){
-			if(board->board[i][j].color != color && board->board[i][j].color != "empty"){
+			if((strcmp(board->board[i][j].color,color) != 0) && (strcmp(board->board[i][j].color ,"empty") != 0)){
 				//printf("%s != %s\n",board->board[i][j].color,color);
 				//printf("check piece %s ->%s [%d][%d]\n",board->board[i][j].output,board->board[i][j].color,i,j);
 				result = move_inner(board,i,j,dx,dy);
@@ -362,8 +380,10 @@ int move_inner(Board  *board,int sx,int sy,int dx,int dy)
 	if(sx == dx && dy == sy){
 		return 0;
 	}
-	printf("[%d],[%d]->[%d],[%d] - ",sx,sy,dx,dy);
-	printf("pawn type:%s;pawn color:%s\n",board->board[sx][sy].output,board->board[sx][sy].color);
+	#ifdef _DEBUG
+		printf("[%d],[%d]->[%d],[%d] - ",sx,sy,dx,dy);
+		printf("pawn type:%c;pawn color:%s\n",board->board[sx][sy].output,board->board[sx][sy].color);
+	#endif
 	switch(board->board[sx][sy].t)
 	{
 		//ROOK,KNIGHT,BISHOP,QUEEN,KING,PAWN
@@ -416,15 +436,26 @@ int parse_string_move(char c)
 int play_game()
 {
 	Board board ;
+	board.white = (char *)malloc(64);
+	board.black = (char *)malloc(64);
+	char *move = (char *)malloc(sizeof(64));
+	int source_x,source_y,dest_x,dest_y,result,turn;
+#ifdef _RELEASE
+	pf("Hello White Please Enter Your Name:");
+	scanf("%s",board.white);
+	pf("Hello Black Please Enter Your Name:");
+	scanf("%s",board.black);
+#else
+	board.white = "Ohad_White";
+	board.black = "Ohad_Black";
+#endif
 	init_board(&board);
 	draw_board(&board);
-	char *move = (char *)malloc(sizeof(64));
-	int source_x,source_y,dest_x,dest_y,result;
-	draw_board(&board);
-
+	turn = 0;
 do
 	{
-		pf("Please insert your move:\n") //@todo add the name of the player (maybe count the turns;)
+		printf("%s, ",(turn == 0 ? board.white : board.black));
+		pf("Please insert your move:\n"); //@todo (maybe count the turns;)
 		scanf("%s",move);
 		//fgets(move,6,stdin);
 		printf("%s\n",move);
@@ -433,11 +464,11 @@ do
 			source_y = atoi(&move[1]);
 			dest_x = parse_string_move(move[3]);
 			dest_y = atoi(&move[4]);
-
 			result = one_move(&board,source_x -1,source_y - 1,dest_x -1,dest_y - 1);
-			//draw_board(&board);
+			turn = turn == 0 ? 1 : 0;
+			draw_board(&board);
 		}
-	}while(move[0] != 69 && result != -1);
+	}while(move[0] != 69 && result != -1 && 0);
 	free(move);
 	return 0;
 }

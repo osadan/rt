@@ -9,20 +9,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-//#include <conio.h>
-//#include <./src.h>
-//#include "funcs.c"
-
-//
-//#include <tests.c>
 #include "src.h"
 #include "tests.h"
-//#include <tests.c>
-//#include <stdint.h>
-//#include <./definitions.h>
-//#include <funcs.c>
 
-
+#define _DEBUG 1
+//#define _TESTS 1
+//#define _RELEASE 1
 int main ()
 {
 	printf("start\n");
@@ -32,7 +24,7 @@ int main ()
 	//@todo switch king and rook
 	//@todo take the code of the switch and wrap it with a function is_ok
 	//@todo color the soldiers
-	//play_game();
+	play_game();
 	//test_pawn();
 	//test_knight();
 	//test_bishop();

@@ -6,3 +6,5 @@
 תזרים של משחק
 אם חייל מגיע למקום האחרון להחליף אותו למשהו אחרֱֲֲֳִֵַ
 
+convert char * to char
+or convert upper to lower

@@ -19,34 +19,31 @@
 #define pl(x){printf("%d\n",x);
 enum Pawns {ROOK,KNIGHT,BISHOP,QUEEN,KING,PAWN,EMPTY};
 
-typedef struct point{
-	int i;
-	int j;
-} Point;
 
 typedef struct piece
 {
 	char *color;
 	enum Pawns t;
-	char *output;
+	char output;
 	short int status;
-	//Point point;
+	char first_move;
 } Piece;
 
 typedef struct board
 {
 	 Piece board [8][8];
 	 Piece old_board [8][8];
-	char *white;
-	char *black;
-	int status;
+	 char *white;
+	 char *black;
+	 int status;
+
 }Board;
 
 void init_board(Board *board);
 Board init_game();
 void draw_board(Board  *board);
 int play_game();
-Piece make_piece(char *color,int p, char *output);
+Piece make_piece(char *color,int p, char output);
 int one_move(Board  *board,int sx,int sy,int dx,int dy);
 int parse_string_move(char c);
 int play_king(Board  *board,int sx,int sy,int dx,int dy);
@@ -58,6 +55,8 @@ int play_knight(Board  *board,int sx,int sy,int dx,int dy);
 int move_inner(Board  *board,int sx,int sy,int dx,int dy);
 void switch_piece(Piece *piece_src,Piece *piece_dest);
 int is_chess(char *color);
+int is_threat (Board *board,int dx,int dy,char *color);
+int not_empty(Piece p);
 #endif
 
 
