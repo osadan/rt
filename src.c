@@ -100,12 +100,20 @@ void draw_board (Board  *board)
 	pf("\n ");
 	for (x = 0 ;x<8;x++)
 	{
-		printf("%d",x);
+		#ifdef _ZEROBASED
+			printf("%d",x);
+		#else
+			printf("%c",to_board_letters(x + 1));
+		#endif
 	}
 	pf("\n");
 	for(y = 0 ;y< 8;y++)
 	{
-		printf("%d",y);
+		#ifdef _ZEROBASED
+			printf("%d",y);
+		#else
+			printf("%d",y+1);
+		#endif
 		for (x = 0 ;x<8;x++)
 		{
 			if(board->board[x][y].status == 1){
@@ -126,14 +134,22 @@ void draw_board (Board  *board)
 
 
 		}
-		printf("%d",y);
+		#ifdef _ZEROBASED
+			printf("%d",y);
+		#else
+			printf("%d",y+1);
+		#endif
 		printf("\n");
 
 	}
 	pf(" ");
 	for (x = 0 ;x<8;x++)
 	{
-		printf("%d",x);
+		#ifdef _ZEROBASED
+			printf("%d",x);
+		#else
+			printf("%c",to_board_letters(x+1));
+		#endif
 	}
 	pf("\n");
 
@@ -421,6 +437,25 @@ int not_empty(Piece p)
 	return p.t != EMPTY;
 }
 
+char to_board_letters(int i)
+{
+	switch(i)
+	{
+	case 1 : return 'A';
+	case 2 : return 'B';
+	case 3 : return 'C';
+	case 4 : return 'D';
+	case 5 : return 'E';
+	case 6 : return 'F';
+	case 7 : return 'G';
+	case 8 : return 'H';
+	}
+}
+
+
+/**
+ * parse the move input to integer
+ */
 int parse_string_move(char c)
 {
 	if ( c > 96 && c < 123 ){
@@ -438,8 +473,8 @@ int play_game()
 	Board board ;
 	board.white = (char *)malloc(64);
 	board.black = (char *)malloc(64);
-	char *move = (char *)malloc(sizeof(64));
 	int source_x,source_y,dest_x,dest_y,result,turn;
+	char t1,t2;
 #ifdef _RELEASE
 	pf("Hello White Please Enter Your Name:");
 	scanf("%s",board.white);
@@ -451,25 +486,29 @@ int play_game()
 #endif
 	init_board(&board);
 	draw_board(&board);
-	turn = 0;
+	turn = WHITE;
 do
 	{
-		printf("%s, ",(turn == 0 ? board.white : board.black));
+		//source_x = source_y = dest_x = dest_y = 0;
+		printf("%s, ",(turn == WHITE ? board.white : board.black));
 		pf("Please insert your move:\n"); //@todo (maybe count the turns;)
-		scanf("%s",move);
-		//fgets(move,6,stdin);
-		printf("%s\n",move);
-		if(move[0] != 69){
-			source_x = parse_string_move(move[0]);
-			source_y = atoi(&move[1]);
-			dest_x = parse_string_move(move[3]);
-			dest_y = atoi(&move[4]);
+		scanf("%c%d:%c%d",&t1,&source_y,&t2,&dest_y);
+		printf("%d,%d\n",source_x,source_y);
+		if(t1 != 68){
+			source_x = parse_string_move(t1);
+			dest_x = parse_string_move(t2);
 			result = one_move(&board,source_x -1,source_y - 1,dest_x -1,dest_y - 1);
-			turn = turn == 0 ? 1 : 0;
-			draw_board(&board);
+			if (result == 0) {
+				pf("your move is not valid please try again:\n")
+			}
+			else if (result == 1) {
+				turn = turn == WHITE ? BLACK : WHITE;
+				draw_board(&board);
+			}
 		}
-	}while(move[0] != 69 && result != -1 && 0);
-	free(move);
+	}while(t1 != 68 && result != -1 );
+	free(board.white);
+	free(board.black);
 	return 0;
 }
 

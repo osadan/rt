@@ -13,12 +13,14 @@
 #ifndef SRC_H_
 #define SRC_H_
 
+#define _DEBUG
+//#define _ZEROBASED
 
 #define pf(x) {printf(x);}
 #define pp(x,y){printf(x,y);}
 #define pl(x){printf("%d\n",x);
 enum Pawns {ROOK,KNIGHT,BISHOP,QUEEN,KING,PAWN,EMPTY};
-
+enum Turn {WHITE,BLACK};
 
 typedef struct piece
 {
@@ -57,6 +59,7 @@ void switch_piece(Piece *piece_src,Piece *piece_dest);
 int is_chess(char *color);
 int is_threat (Board *board,int dx,int dy,char *color);
 int not_empty(Piece p);
+char to_board_letters(int i);
 #endif
 
 

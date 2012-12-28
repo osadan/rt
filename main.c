@@ -12,12 +12,14 @@
 #include "src.h"
 #include "tests.h"
 
-#define _DEBUG 1
+
 //#define _TESTS 1
 //#define _RELEASE 1
 int main ()
 {
 	printf("start\n");
+	int b,e;
+	char a,d;
 	//print_int(10,15);
 	//test_is_threat();
 	//test_game_start();
