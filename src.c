@@ -390,7 +390,7 @@ int move_inner(Board  *board,int sx,int sy,int dx,int dy)
 	if(!not_empty(board->board[sx][sy])){
 			return 0;
 	}
-	if((dx < 0 && dx > 7) || (dy < 0 && dy > 7)){
+	if((dx < 0 || dx > 7) || (dy < 0 || dy > 7) || sx < 0 || sx > 7 || sy < 0 || sy > 7){
 		return 0;
 	}
 	if(sx == dx && dy == sy){
@@ -459,10 +459,10 @@ char to_board_letters(int i)
 int parse_string_move(char c)
 {
 	if ( c > 96 && c < 123 ){
-		return c - 96;
+		return (int)c - 96;
 	}
 	if(c > 64 && c < 91){
-		return c -  64;
+		return (int)c -  64;
 	}
 	return 0;
 
@@ -473,8 +473,9 @@ int play_game()
 	Board board ;
 	board.white = (char *)malloc(64);
 	board.black = (char *)malloc(64);
-	int source_x,source_y,dest_x,dest_y,result,turn;
-	char t1,t2;
+	int source_x,source_y,dest_x,dest_y,result,turn,end;
+	//char t1,t2;
+	char * input = (char *)malloc(12);
 #ifdef _RELEASE
 	pf("Hello White Please Enter Your Name:");
 	scanf("%s",board.white);
@@ -492,11 +493,15 @@ do
 		//source_x = source_y = dest_x = dest_y = 0;
 		printf("%s, ",(turn == WHITE ? board.white : board.black));
 		pf("Please insert your move:\n"); //@todo (maybe count the turns;)
-		scanf("%c%d:%c%d",&t1,&source_y,&t2,&dest_y);
-		printf("%d,%d\n",source_x,source_y);
-		if(t1 != 68){
-			source_x = parse_string_move(t1);
-			dest_x = parse_string_move(t2);
+		//scanf("%c%d:%c%d",&t1,&source_y,&t2,&dest_y);
+		scanf("%s",input);
+
+		end = strcmp(input,"END");
+		if(end != 0){
+			source_x = parse_string_move(input[0]);
+			source_y = atoi(&input[1]);
+			dest_x = parse_string_move(input[3]);
+			dest_y = atoi(&input[4]);
 			result = one_move(&board,source_x -1,source_y - 1,dest_x -1,dest_y - 1);
 			if (result == 0) {
 				pf("your move is not valid please try again:\n")
@@ -506,9 +511,10 @@ do
 				draw_board(&board);
 			}
 		}
-	}while(t1 != 68 && result != -1 );
-	free(board.white);
-	free(board.black);
+	}while(end != 0 && result != -1 );
+	//free(board.white);
+	//free(board.black);
+	free(input);
 	return 0;
 }
 

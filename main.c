@@ -27,6 +27,7 @@ int main ()
 	//@todo take the code of the switch and wrap it with a function is_ok
 	//@todo color the soldiers
 	play_game();
+
 	//test_pawn();
 	//test_knight();
 	//test_bishop();
