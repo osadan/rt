@@ -20,37 +20,37 @@ void test_rook()
 	init_board(&board);
 	draw_board(&board);
 	board.board[3][3] = board.board[0][0];
-	board.board[0][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[0][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,3,2) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[0][0];
-	board.board[0][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[0][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,3,4) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[0][0];
-	board.board[0][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[0][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,0,3) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[0][0];
-	board.board[0][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[0][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,3,6) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[0][0];
-	board.board[0][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[0][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,2,3) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[0][0];
-	board.board[0][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[0][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,7,3) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[0][0];
-	board.board[0][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[0][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,3,0) == 0);
 	assert(test_move(&board,3,3,2,2) == 0);
@@ -64,17 +64,17 @@ void test_bishop()
 	init_board(&board);
 	draw_board(&board);
 	board.board[4][3] = board.board[5][0];
-	board.board[5][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[5][0] = (Piece){"empty",EMPTY,'_',1};
 	assert(test_move(&board,4,3,0,5) == 0);
 	assert(test_move(&board,4,3,1,4) == 0);
 	assert(test_move(&board,4,3,6,5) == 1);
 	init_board(&board);
 	board.board[3][2] = board.board[5][0];
-	board.board[5][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[5][0] = (Piece){"empty",EMPTY,'_',1};
 	assert(test_move(&board,3,2,7,7) == 0);
 	init_board(&board);
 	board.board[4][3] = board.board[5][0];
-	board.board[5][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[5][0] = (Piece){"empty",EMPTY,'_',1};
 	assert(test_move(&board,4,3,7,6) == 1);
 	draw_board(&board);
 	//@todo test that the soldier you eat is from your enamy
@@ -88,7 +88,7 @@ void test_knight()
 	draw_board(&board);
 
 	board.board[4][3] = board.board[1][0];
-	board.board[1][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[1][0] = (Piece){"empty",EMPTY,'_',1};
 	assert(test_move(&board,4,3,3,5) == 1);
 	board.board[4][3] = board.board[3][5];
 	assert(test_move(&board,4,3,5,6) == 0);
@@ -157,37 +157,37 @@ void test_queen()
 	init_board(&board);
 	draw_board(&board);
 	board.board[3][3] = board.board[3][0];
-	board.board[3][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[3][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,3,6) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[3][0];
-	board.board[3][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[3][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,0,6) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[3][0];
-	board.board[3][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[3][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,7,3) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[3][0];
-	board.board[3][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[3][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,6,6) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[3][0];
-	board.board[3][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[3][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,3,2) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[3][0];
-	board.board[3][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[3][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,2,4) == 1);
 	init_board(&board);
 	board.board[3][3] = board.board[3][0];
-	board.board[3][0] = (Piece){"empty",EMPTY,"_",1};
+	board.board[3][0] = (Piece){"empty",EMPTY,'_',1};
 
 	assert(test_move(&board,3,3,2,6) == 0);
 	assert(test_move(&board,3,3,3,7) == 0);
@@ -206,32 +206,32 @@ void test_king()
 		assert(test_move(&board,3,3,3,2) == 1);
 		init_board(&board);
 		board.board[3][3] = board.board[4][0];
-		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		board.board[4][0] = (Piece){"empty",EMPTY,'_',1};
 
 		assert(test_move(&board,3,3,2,3) == 1);
 		init_board(&board);
 		board.board[3][3] = board.board[4][0];
-		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		board.board[4][0] = (Piece){"empty",EMPTY,'_',1};
 		assert(test_move(&board,3,3,7,5) == 0);
 		assert(test_move(&board,3,3,4,4) == 1);
 		init_board(&board);
 		board.board[3][3] = board.board[4][0];
-		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		board.board[4][0] = (Piece){"empty",EMPTY,'_',1};
 
 		assert(test_move(&board,3,3,2,2) == 1);
 		init_board(&board);
 		board.board[3][3] = board.board[4][0];
-		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		board.board[4][0] = (Piece){"empty",EMPTY,'_',1};
 
 		assert(test_move(&board,3,3,4,4) == 1);
 		init_board(&board);
 		board.board[3][3] = board.board[4][0];
-		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		board.board[4][0] = (Piece){"empty",EMPTY,'_',1};
 
 		assert(test_move(&board,3,3,4,3) == 1);
 		init_board(&board);
 		board.board[3][3] = board.board[4][0];
-		board.board[4][0] = (Piece){"empty",EMPTY,"_",1};
+		board.board[4][0] = (Piece){"empty",EMPTY,'_',1};
 
 		assert(test_move(&board,3,3,3,5) == 0);
 		assert(test_move(&board,3,3,2,5) == 0);

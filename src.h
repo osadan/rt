@@ -56,7 +56,7 @@ int play_bishop(Board  *board,int sx,int sy,int dx,int dy);
 int play_knight(Board  *board,int sx,int sy,int dx,int dy);
 int move_inner(Board  *board,int sx,int sy,int dx,int dy);
 void switch_piece(Piece *piece_src,Piece *piece_dest);
-int is_chess(char *color);
+int is_chess (Board *board,int dx,int dy,char *color);
 int is_threat (Board *board,int dx,int dy,char *color);
 int not_empty(Piece p);
 char to_board_letters(int i);

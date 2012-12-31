@@ -359,14 +359,17 @@ int play_king(Board  *board,int sx,int sy,int dx,int dy)
 		return 0;
 	}
 	if(is_threat(board,dx,dy,board->board[sx][sy].color) ){
-		pf("chess\n");
+		pf("In this point there will be chess\n");
 		return 0;
 	}
 	//switch_piece(&board->board[sx][sy],&board->board[dx][dy]);
 	return 1;
 
 }
-
+/**
+ * checks if certain place is threaten by any pawn on the board
+ * the color is his color
+ */
 int is_threat (Board *board,int dx,int dy,char *color)
 {
 	int i ,j,result ;
@@ -379,6 +382,28 @@ int is_threat (Board *board,int dx,int dy,char *color)
 				if (result == 1){
 					return result;
 				}
+			}
+		}
+	}
+	return 0;
+}
+/**
+ * checks after player move if the king is in chess
+ * the color is the color of the player not the king
+ */
+int is_chess (Board *board,int dx,int dy,char *color)
+{
+	int i,j,result;
+	for(i =0;i< 8;i++)
+	{
+		for(j = 0;j<8;j++)
+		{
+			if (board->board[i][j].t == KING && strcmp(board->board[i][j].color,color) != 0){
+				result =  is_threat(board,i,j,board->board[i][j].color);
+				if (result == 1){
+					pf("chess!!\n");
+				}
+				return result;
 			}
 		}
 	}
@@ -512,8 +537,6 @@ do
 			}
 		}
 	}while(end != 0 && result != -1 );
-	//free(board.white);
-	//free(board.black);
 	free(input);
 	return 0;
 }
