@@ -475,6 +475,7 @@ char to_board_letters(int i)
 	case 7 : return 'G';
 	case 8 : return 'H';
 	}
+	return ' ';
 }
 
 
@@ -502,6 +503,7 @@ int play_game()
 	//char t1,t2;
 	char * input = (char *)malloc(12);
 #ifdef _RELEASE
+	pf("Insert your move in a format of A1:B2\n");
 	pf("Hello White Please Enter Your Name:");
 	scanf("%s",board.white);
 	pf("Hello Black Please Enter Your Name:");

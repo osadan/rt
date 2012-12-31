@@ -13,7 +13,8 @@
 #ifndef SRC_H_
 #define SRC_H_
 
-#define _DEBUG
+//#define _DEBUG
+#define _RELEASE
 //#define _ZEROBASED
 
 #define pf(x) {printf(x);}

@@ -18,8 +18,6 @@
 int main ()
 {
 	printf("start\n");
-	int b,e;
-	char a,d;
 	//print_int(10,15);
 	//test_is_threat();
 	//test_game_start();
